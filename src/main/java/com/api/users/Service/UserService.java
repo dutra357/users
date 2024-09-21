@@ -6,12 +6,15 @@ import com.api.users.Repository.UserRepository;
 import com.api.users.Service.Interfaces.UserInterface;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class UserService implements UserInterface {
 
-    public final UserRepository userRepository;
+    private final UserRepository userRepository;
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -24,5 +27,13 @@ public class UserService implements UserInterface {
     @Override
     public UserDto saveUser(UserEntity user) {
         return new UserDto(userRepository.save(user));
+    }
+
+
+    public List<UserDto> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserDto::new)
+                .collect(toList());
     }
 }

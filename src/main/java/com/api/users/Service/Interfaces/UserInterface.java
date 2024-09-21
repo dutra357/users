@@ -10,4 +10,5 @@ public interface UserInterface {
     Optional<UserEntity> findByEmail(String email);
 
     UserDto saveUser(UserEntity user);
+
 }

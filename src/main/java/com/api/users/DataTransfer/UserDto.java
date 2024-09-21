@@ -3,9 +3,11 @@ package com.api.users.DataTransfer;
 import com.api.users.Entities.UserEntity;
 import com.api.users.Enuns.Role;
 
+import java.util.UUID;
+
 public class UserDto {
 
-    private Long id;
+    private UUID id;
     private String email;
     private String name;
     private Role role;
@@ -17,18 +19,18 @@ public class UserDto {
         this.name = user.getName();
         this.role = user.getRole();
     }
-    public UserDto(Long id, String email, String name, Role role) {
+    public UserDto(UUID id, String email, String name, Role role) {
         this.id = id;
         this.email = email;
         this.role = role;
         this.name = name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -9,15 +9,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class UserEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, unique = true)
-    private Long id;
+    private UUID id;
 
     @Column(name = "login", unique = true, length = 150, nullable = false)
     private String email;
@@ -32,7 +33,7 @@ public class UserEntity implements UserDetails {
     private Role role;
 
     public UserEntity() {}
-    public UserEntity(Long id, String email, String name, String password, Role role) {
+    public UserEntity(UUID id, String email, String name, String password, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -40,11 +41,11 @@ public class UserEntity implements UserDetails {
         this.name = name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
