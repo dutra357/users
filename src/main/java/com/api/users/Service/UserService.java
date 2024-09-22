@@ -30,9 +30,20 @@ public class UserService implements UserInterface {
         return new UserDto(userRepository.save(user));
     }
 
-    
+    @Override
+    public UserDto getUser(String email) {
+        Optional<UserEntity> user = findByEmail(email);
 
+        return new UserDto(user.get());
+    }
 
+    @Override
+    public void deleteUser(String email) {
+        findByEmail(email);
+        userRepository.deleteByEmail(email);
+    }
+
+    @Override
     public List<UserDto> getUsers() {
         return userRepository.findAll()
                 .stream()
@@ -40,7 +51,12 @@ public class UserService implements UserInterface {
                 .collect(toList());
     }
 
-
+    @Override
+    public Optional<UserEntity> findByEmail(String email) {
+        return Optional.of(userRepository.findByEmail(email)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "E-mail not fund.")));
+    }
 
     @Override
     public void verifyEmail(String email) {
@@ -49,10 +65,5 @@ public class UserService implements UserInterface {
                     HttpStatus.CONFLICT, "E-mail already exists."
             );
         }
-    }
-
-    @Override
-    public Optional<UserEntity> findByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 }
