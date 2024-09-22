@@ -8,30 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-
-    //private UsuarioRepository repository;
-    //private final AuthenticationManager authenticationManager;
-    //private final JwtUtil tokenService;
-
     private final UserInterface userService;
     public UserController(UserInterface userService) {
         this.userService = userService;
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity login(@RequestBody LoginDtoRequest login){
-//        var usernamePassword = new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPassword());
-//        var auth = this.authenticationManager.authenticate(usernamePassword);
-//
-//        var token = tokenService.generateToken((UserEntity) auth.getPrincipal());
-//
-//        return ResponseEntity.ok(new DtoTokenResponse(token));
-//    }
 
     @PostMapping
     public ResponseEntity<UserDto> saveUser(@RequestBody  UserEntity newUser) {
@@ -41,6 +28,16 @@ public class UserController {
     @GetMapping
     public ResponseEntity<UserDto> getUser(@RequestParam("email")  String email) {
         return ResponseEntity.status(HttpServletResponse.SC_OK).body(userService.getUser(email));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getUsers() {
+        return ResponseEntity.status(HttpServletResponse.SC_OK).body(userService.getUsers());
+    }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable  String email, @RequestBody  UserEntity newUser) {
+        return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(userService.updateUser(email, newUser));
     }
 
     @DeleteMapping("/{email}")

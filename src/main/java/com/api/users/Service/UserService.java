@@ -4,6 +4,7 @@ import com.api.users.DataTransfer.UserDto;
 import com.api.users.Entities.UserEntity;
 import com.api.users.Repository.UserRepository;
 import com.api.users.Service.Interfaces.UserInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,10 @@ import static java.util.stream.Collectors.toList;
 public class UserService implements UserInterface {
 
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
+    private final HttpServletRequest http;
+    public UserService(UserRepository userRepository, HttpServletRequest http) {
         this.userRepository = userRepository;
+        this.http = http;
     }
 
     @Override
@@ -31,16 +34,30 @@ public class UserService implements UserInterface {
     }
 
     @Override
-    public UserDto getUser(String email) {
-        Optional<UserEntity> user = findByEmail(email);
+    public UserDto updateUser(String email, UserEntity user) {
+        verifyEmail(user.getEmail());
 
-        return new UserDto(user.get());
+        UserEntity userUpdate = userRepository.findByEmail(email).get();
+
+        if (user.getPassword() != null) {
+            userUpdate.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
+
+        if (user.getEmail() != null) {
+            userUpdate.setEmail(user.getEmail());
+        }
+
+        if (user.getName() != null) {
+            userUpdate.setEmail(user.getName());
+        }
+
+        return new UserDto(userRepository.save(userUpdate));
     }
 
     @Override
-    public void deleteUser(String email) {
-        findByEmail(email);
-        userRepository.deleteByEmail(email);
+    public UserDto getUser(String email) {
+        Optional<UserEntity> user = findByEmail(email);
+        return new UserDto(user.get());
     }
 
     @Override
@@ -50,6 +67,14 @@ public class UserService implements UserInterface {
                 .map(UserDto::new)
                 .collect(toList());
     }
+
+    @Override
+    public void deleteUser(String email) {
+        findByEmail(email);
+        userRepository.deleteByEmail(email);
+    }
+
+
 
     @Override
     public Optional<UserEntity> findByEmail(String email) {

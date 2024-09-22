@@ -10,6 +10,8 @@ public interface UserInterface {
 
     UserDto saveUser(UserEntity user);
 
+    UserDto updateUser(String email, UserEntity user);
+
     Optional<UserEntity> findByEmail(String email);
 
     List<UserDto> getUsers();
