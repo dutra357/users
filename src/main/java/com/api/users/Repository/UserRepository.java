@@ -2,10 +2,15 @@ package com.api.users.Repository;
 
 import com.api.users.Entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     Optional<UserEntity> findByEmail(String email);
+
+    void deleteByEmail(String email);
 }

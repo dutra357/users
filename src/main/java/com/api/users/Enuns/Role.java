@@ -1,7 +1,7 @@
 package com.api.users.Enuns;
 
-public enum Role {
 
+public enum Role {
     ADMIN("admin"),
     PEDAGOGICO("pedagogico"),
     RECRUITER("recruiter"),

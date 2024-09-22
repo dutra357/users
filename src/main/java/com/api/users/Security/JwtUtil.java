@@ -19,7 +19,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-
     public String generateToken(String username) {
         return Jwts.builder()
                 .subject(username)
@@ -37,8 +36,6 @@ public class JwtUtil {
                 .getPayload();
     }
 
-
-    // Extrai o email do usuário do token JWT
     public String extrairEmailToken(String token) {
         return extractClaims(token).getSubject();
     }

@@ -6,39 +6,47 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 public class UserEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, unique = true)
+    private UUID id;
 
     @Column(name = "login", unique = true, length = 150, nullable = false)
     private String email;
 
-    @Column(name = "senha", length = 250, nullable = false)
+    @Column(name = "name", unique = false, length = 150, nullable = false)
+    private String name;
+
+    @Column(name = "password", length = 250, nullable = false)
     private String password;
 
     @Column(name = "role")
     private Role role;
 
     public UserEntity() {}
-    public UserEntity(Long id, String email, String password, Role role) {
+    public UserEntity(UUID id, String email, String name, String password, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.name = name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -48,6 +56,14 @@ public class UserEntity implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {
