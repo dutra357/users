@@ -32,8 +32,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "role")
     private Role role;
 
-    @Column
-    @OneToMany
+
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 
     public UserEntity() {}
