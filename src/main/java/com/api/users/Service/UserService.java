@@ -1,10 +1,11 @@
 package com.api.users.Service;
 
 import com.api.users.DataTransfer.UserDto;
+import com.api.users.Entities.Address;
 import com.api.users.Entities.UserEntity;
+import com.api.users.Repository.AddressRepository;
 import com.api.users.Repository.UserRepository;
 import com.api.users.Service.Interfaces.UserInterface;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,10 @@ import static java.util.stream.Collectors.toList;
 public class UserService implements UserInterface {
 
     private final UserRepository userRepository;
-    private final HttpServletRequest http;
-    public UserService(UserRepository userRepository, HttpServletRequest http) {
+    private final AddressRepository addressRepository;
+    public UserService(UserRepository userRepository, AddressRepository addressRepository) {
         this.userRepository = userRepository;
-        this.http = http;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -74,6 +75,39 @@ public class UserService implements UserInterface {
         userRepository.deleteByEmail(email);
     }
 
+    @Override
+    public Address updateAddress(Long id, Address address) {
+        Address addressUpdate = addressRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Address not found.")
+        );
+
+        if (address.getCep() != null) {
+            addressUpdate.setCep(address.getCep());
+        }
+
+        if (address.getCity() != null) {
+            addressUpdate.setCity(address.getCity());
+        }
+
+        if (address.getComplement() != null) {
+            addressUpdate.setComplement(address.getComplement());
+        }
+
+        if (address.getRoad() != null) {
+            addressUpdate.setRoad(address.getRoad());
+        }
+
+        if (address.getState() != null) {
+            addressUpdate.setState(address.getState());
+        }
+
+        if (address.getNumber() != null) {
+            addressUpdate.setNumber(address.getNumber());
+        }
+
+        return addressRepository.save(addressUpdate);
+    }
+
 
 
     @Override
@@ -91,4 +125,5 @@ public class UserService implements UserInterface {
             );
         }
     }
+
 }

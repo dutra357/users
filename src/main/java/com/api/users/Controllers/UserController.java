@@ -1,6 +1,7 @@
 package com.api.users.Controllers;
 
 import com.api.users.DataTransfer.UserDto;
+import com.api.users.Entities.Address;
 import com.api.users.Entities.UserEntity;
 import com.api.users.Service.Interfaces.UserInterface;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,6 +45,11 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable  String email) {
         userService.deleteUser(email);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/addresses/{id}")
+    public ResponseEntity<Address> updateAddress(@PathVariable Long id, @RequestBody Address addressUpdate) {
+        return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(userService.updateAddress(id, addressUpdate));
     }
 
 }

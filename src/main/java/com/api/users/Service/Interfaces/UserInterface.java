@@ -1,6 +1,7 @@
 package com.api.users.Service.Interfaces;
 
 import com.api.users.DataTransfer.UserDto;
+import com.api.users.Entities.Address;
 import com.api.users.Entities.UserEntity;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public interface UserInterface {
     UserDto getUser(String email);
 
     void deleteUser(String email);
+
+    Address updateAddress (Long id, Address address);
 
     void verifyEmail(String email);
 
