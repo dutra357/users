@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +31,10 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "role")
     private Role role;
+
+    @Column
+    @OneToMany
+    private List<Address> addresses;
 
     public UserEntity() {}
     public UserEntity(UUID id, String email, String name, String password, Role role) {
@@ -76,6 +79,10 @@ public class UserEntity implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.api.users.DataTransfer;
 
+import com.api.users.Entities.Address;
 import com.api.users.Entities.UserEntity;
 import com.api.users.Enuns.Role;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UserDto {
@@ -10,6 +12,7 @@ public class UserDto {
     private UUID id;
     private String email;
     private String name;
+    private List<Address> addresses;
     private Role role;
 
     public UserDto(){}
@@ -18,6 +21,7 @@ public class UserDto {
         this.email = user.getEmail();
         this.name = user.getName();
         this.role = user.getRole();
+        this.addresses = user.getAddresses();
     }
     public UserDto(UUID id, String email, String name, Role role) {
         this.id = id;
@@ -48,5 +52,21 @@ public class UserDto {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }
